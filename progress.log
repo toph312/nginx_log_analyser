@@ -1,2 +1,3 @@
 [2025-10-16 21:39] Initialize project directory and prepare to submit to GitHub
 [2025-10-17 22:24] Completed NGINX log analyser: implemented regex-based extraction for paths, status codes, and user agents; verified output formatting and report structure.
+[2025-10-18 16:43] Optimized output formatting: added printf-based alignment for report sections, improved column width handling, and ensured consistent layout across IP, path, status, and user-agent tables.

@@ -10,13 +10,23 @@ echo "========== NGINX LOG REPORT =========="
 # uniq -c ,-c will count the number of times each unique value appears.
 echo
 echo 'Top 5 IP addresses with the most requests:'
-awk '{print $1}' "$file" | sort | uniq -c | sort -k1,1 -rn | head -5
+awk '{print $1}' "$file" \
+  | sort \
+  | uniq -c \
+  | sort -k1,1 -rn \
+  | head -5 \
+  | awk '{printf "%-25s - %5s requests\n", $2, $1}'
 
 # Top 5 most requested paths
 #########################################
 echo
 echo 'Top 5 most requested paths:'
-awk '{ match($0, /"[^ ]+ ([^ ]+) HTTP/, arr); if (arr[1] != "") print arr[1]; }' nginx-access.log | sort | uniq -c | sort -k1,1 -rn | head -5
+awk '{ match($0, /"[^ ]+ ([^ ]+) HTTP/, arr); if (arr[1] != "") print arr[1]; }' "$file" \
+  | sort \
+  | uniq -c \
+  | sort -k1,1 -rn \
+  | head -5 \
+  | awk '{printf "%-25s - %5s requests\n", $2, $1}'
 
  # Top 5 response status codes
 #########################################
@@ -26,7 +36,12 @@ awk '{
   if (match($0, /HTTP\/[0-9.]+" ([0-9]{3}) /, arr)) {
     print arr[1]
   }
-}' nginx-access.log | sort | uniq -c | sort -k1,1nr | head -5
+}' "$file" \
+  | sort \
+  | uniq -c \
+  | sort -k1,1 -rn \
+  | head -5 \
+  | awk '{printf "%-25s - %5s requests\n", $2, $1}'
 
 # Top 5 user agents
 #########################################
@@ -36,4 +51,9 @@ awk '{
   if (match($0, /\((https?:\/\/)?([^/)]+)\)/, a)) {
     print a[2]
   }
-}' nginx-access.log | sort | uniq -c | sort -k1,1nr | head -5
+}' "$file" \
+  | sort \
+  | uniq -c \
+  | sort -k1,1 -rn \
+  | head -5 \
+  | awk '{printf "%-25s - %5s requests\n", $2, $1}'
